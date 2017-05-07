@@ -1,6 +1,8 @@
 package com.walktogether.base;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -53,5 +55,15 @@ public abstract class BaseActivity extends Activity {
 
     public void setActivityImmersive(boolean ifActivityImmersive){
         this.ifActivityImmersive = ifActivityImmersive;
+    }
+
+    /**
+     * 跳转到新页面
+     */
+    protected void startActivity(Class classes){
+        Intent intent = new Intent();
+        intent.setClass(getApplicationContext(), classes);
+        //设置要跳转到的页面以及跳转时的动画
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
     }
 }

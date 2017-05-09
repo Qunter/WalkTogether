@@ -3,12 +3,17 @@ package com.walktogether.base;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.SyncStateContract;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 /**
  * Created by Administrator on 2017/5/4.
@@ -17,6 +22,7 @@ import android.view.WindowManager;
 public abstract class BaseActivity extends Activity {
     //是否设置沉浸式
     private boolean ifActivityImmersive = false;
+    private final int REQUEST_ACCESS_LOCATION=0x00;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,5 +71,42 @@ public abstract class BaseActivity extends Activity {
         intent.setClass(getApplicationContext(), classes);
         //设置要跳转到的页面以及跳转时的动画
         startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+    }
+    /**
+     * 判断是否拥有指定权限
+     */
+    public boolean hasPermission(String... permissions) {
+        for (String permission : permissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED)
+                return false;
+        }
+        return true;
+    }
+    /**
+     * 请求权限
+     */
+    protected void requestPermission(int code, String... permissions) {
+        ActivityCompat.requestPermissions(this, permissions, code);
+        Toast.makeText(this,"如果拒绝授权,会导致应用无法正常使用",Toast.LENGTH_SHORT).show();
+        //ToastUtil.showMessage(this, "如果拒绝授权,会导致应用无法正常使用", Toast.Length_SHORT);
+    }
+    /**
+     * 请求授权的回调方法
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case REQUEST_ACCESS_LOCATION:
+                //例子：请求定位
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this,"授权成功，请继续使用应用",Toast.LENGTH_SHORT).show();
+                    // 这里写你需要的业务逻辑
+                } else {
+                    Toast.makeText(this,"您拒绝授权,会导致应用无法正常使用，您可在设置中进行授权或者再次打开软件以完成授权",Toast.LENGTH_LONG).show();
+                    finish();
+                }
+                break;
+        }
     }
 }

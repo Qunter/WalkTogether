@@ -1,9 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xcskin="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
     <com.amap.api.maps2d.MapView
         android:id="@+id/main_map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-</LinearLayout>
+
+    <com.walktogether.view.XCArcMenuView
+        android:id="@+id/menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        xcskin:position="left_bottom"
+        xcskin:radius="150dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+
+        <RelativeLayout
+            android:id="@+id/id_button"
+            android:layout_width="@dimen/mIconSizeWidth"
+            android:layout_height="@dimen/mIconSizeHeight"
+            android:background="@drawable/menu_bg" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_plus" />
+        </RelativeLayout>
+        <com.walktogether.view.MenuItem
+
+            android:layout_width="@dimen/mIconSizeWidth"
+            android:layout_height="@dimen/mIconSizeHeight"
+            android:tag="qiwei"
+            xcskin:text="气味"
+            xcskin:image="@drawable/ic_plus" />
+        <com.walktogether.view.MenuItem
+            android:layout_width="@dimen/mIconSizeWidth"
+            android:layout_height="@dimen/mIconSizeHeight"
+            android:tag="qipao"
+            xcskin:text="气泡"
+            xcskin:image="@drawable/ic_plus" />
+        <com.walktogether.view.MenuItem
+            android:layout_width="@dimen/mIconSizeWidth"
+            android:layout_height="@dimen/mIconSizeHeight"
+            android:tag="qunliao"
+            xcskin:text="群聊"
+            xcskin:image="@drawable/ic_plus" />
+
+        <com.walktogether.view.MenuItem
+            android:layout_width="@dimen/mIconSizeWidth"
+            android:layout_height="@dimen/mIconSizeHeight"
+            android:tag="anquan"
+            xcskin:text="安全"
+            xcskin:image="@drawable/ic_plus" />
+
+    </com.walktogether.view.XCArcMenuView>
+</RelativeLayout>

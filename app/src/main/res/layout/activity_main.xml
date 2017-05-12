@@ -50,12 +50,5 @@
             xcskin:text="群聊"
             xcskin:image="@drawable/ic_plus" />
 
-        <com.walktogether.view.MenuItem
-            android:layout_width="@dimen/mIconSizeWidth"
-            android:layout_height="@dimen/mIconSizeHeight"
-            android:tag="anquan"
-            xcskin:text="安全"
-            xcskin:image="@drawable/ic_plus" />
-
     </com.walktogether.view.XCArcMenuView>
 </RelativeLayout>

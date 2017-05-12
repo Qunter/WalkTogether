@@ -9,6 +9,7 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps2d.AMap;
+import com.amap.api.maps2d.AMapOptions;
 import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.model.MyLocationStyle;
@@ -28,7 +29,6 @@ public class MainActivity extends BaseActivity implements LocationSource, AMapLo
     private final int REQUEST_ACCESS_LOCATION=0x00;
     @Override
     protected void initVariablesAndService() {
-        setActivityImmersive(true);
         if (hasPermission(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION)) {
         }else {
             //没权限，进行权限请求
@@ -84,15 +84,10 @@ public class MainActivity extends BaseActivity implements LocationSource, AMapLo
         aMap.setLocationSource(this);
         // 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
         aMap.setMyLocationEnabled(true);
+        aMap.getUiSettings().setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
+        aMap.getUiSettings().setLogoPosition(AMapOptions.LOGO_POSITION_BOTTOM_CENTER);//设置高德地图logo显示位置
         // 设置定位的类型为定位模式，有定位、跟随或地图根据面向方向旋转几种
         //aMap.setMyLocationType(AMap.LOCATION_TYPE_LOCATE);
-    }
-    private void initAMap1(){
-        MyLocationStyle myLocationStyle;
-        myLocationStyle = new MyLocationStyle();//初始化定位蓝点样式类
-        aMap.setMyLocationStyle(myLocationStyle);//设置定位蓝点的Style
-        aMap.getUiSettings().setMyLocationButtonEnabled(true);
-        aMap.setMyLocationEnabled(true);// 设置为true表示启动显示定位蓝点，false表示隐藏定位蓝点并不进行定位，默认是false。
     }
 
     @Override

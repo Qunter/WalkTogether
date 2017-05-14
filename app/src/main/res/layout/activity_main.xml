@@ -31,23 +31,22 @@
                 android:src="@drawable/ic_plus" />
         </RelativeLayout>
         <com.walktogether.view.MenuItem
-
             android:layout_width="@dimen/mIconSizeWidth"
             android:layout_height="@dimen/mIconSizeHeight"
-            android:tag="qiwei"
-            xcskin:text="气味"
+            android:tag="around"
+            xcskin:text="周边"
             xcskin:image="@drawable/ic_plus" />
         <com.walktogether.view.MenuItem
             android:layout_width="@dimen/mIconSizeWidth"
             android:layout_height="@dimen/mIconSizeHeight"
-            android:tag="qipao"
-            xcskin:text="气泡"
+            android:tag="friend"
+            xcskin:text="好友"
             xcskin:image="@drawable/ic_plus" />
         <com.walktogether.view.MenuItem
             android:layout_width="@dimen/mIconSizeWidth"
             android:layout_height="@dimen/mIconSizeHeight"
-            android:tag="qunliao"
-            xcskin:text="群聊"
+            android:tag="setting"
+            xcskin:text="设置"
             xcskin:image="@drawable/ic_plus" />
 
     </com.walktogether.view.XCArcMenuView>

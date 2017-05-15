@@ -42,6 +42,12 @@
         <activity android:name=".activity.RegisterActivity"/>
         <!--主界面-->
         <activity android:name=".activity.MainActivity"/>
+        <!--周边界面-->
+        <activity android:name=".activity.AroundActivity"/>
+        <!--好友界面-->
+        <activity android:name=".activity.FriendActivity"/>
+        <!--设置界面-->
+        <activity android:name=".activity.SettingActivity"/>
         <meta-data android:name="com.amap.api.v2.apikey" android:value="0b982d549d5e33a4a751626760fff9d0">
             //开发者申请的key
         </meta-data>

@@ -3,6 +3,8 @@ package com.walktogether.activity;
 import android.Manifest;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -12,15 +14,17 @@ import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.AMapOptions;
 import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
-import com.amap.api.maps2d.model.MyLocationStyle;
 import com.walktogether.R;
 import com.walktogether.base.BaseActivity;
+import com.walktogether.view.XCArcMenuView;
 
 /**
  * Created by Administrator on 2017/5/7.
  */
 
 public class MainActivity extends BaseActivity implements LocationSource, AMapLocationListener {
+    private XCArcMenuView menuView;
+
     private MapView map = null;
     private AMap aMap = null;
     private OnLocationChangedListener mListener;
@@ -39,6 +43,26 @@ public class MainActivity extends BaseActivity implements LocationSource, AMapLo
     @Override
     protected void initViews(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
+        menuView = (XCArcMenuView) findViewById(R.id.main_menu);
+        menuView.setOnMenuItemClickListener(new XCArcMenuView.OnMenuItemClickListener() {
+            @Override
+            public void onClick(View view, int pos) {
+                //通过布局文件中设置的tag来判断具体点击的是哪个按钮从而进行对应操作
+                String tag = (String) view.getTag();
+                switch (tag){
+                    case "around":
+                        startActivity(AroundActivity.class);
+                        break;
+                    case "friend":
+                        startActivity(FriendActivity.class);
+                        break;
+                    case "setting":
+                        startActivity(SettingActivity.class);
+                        break;
+                }
+            }
+        });
+
         map = (MapView) findViewById(R.id.main_map);
         //在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，创建地图
         map.onCreate(savedInstanceState);

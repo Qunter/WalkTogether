@@ -14,15 +14,26 @@ import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.AMapOptions;
 import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
+import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.Marker;
+import com.amap.api.maps2d.model.MarkerOptions;
+import com.amap.api.maps2d.overlay.PoiOverlay;
+import com.amap.api.services.core.LatLonPoint;
+import com.amap.api.services.core.PoiItem;
+import com.amap.api.services.core.SuggestionCity;
+import com.amap.api.services.poisearch.PoiResult;
+import com.amap.api.services.poisearch.PoiSearch;
 import com.walktogether.R;
 import com.walktogether.base.BaseActivity;
 import com.walktogether.view.XCArcMenuView;
+
+import java.util.List;
 
 /**
  * Created by Administrator on 2017/5/7.
  */
 
-public class MainActivity extends BaseActivity implements LocationSource, AMapLocationListener {
+public class MainActivity extends BaseActivity implements LocationSource, AMapLocationListener, PoiSearch.OnPoiSearchListener {
     private XCArcMenuView menuView;
 
     private MapView map = null;
@@ -31,6 +42,9 @@ public class MainActivity extends BaseActivity implements LocationSource, AMapLo
     private AMapLocationClient mlocationClient;
     private AMapLocationClientOption mLocationOption;
     private final int REQUEST_ACCESS_LOCATION=0x00;
+    private PoiSearch.SearchBound searchBound;
+    private LatLonPoint latLonPoint;
+    private PoiSearch.Query query;
     @Override
     protected void initVariablesAndService() {
         if (hasPermission(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION)) {
@@ -71,6 +85,7 @@ public class MainActivity extends BaseActivity implements LocationSource, AMapLo
             aMap = map.getMap();
             initAMap();
         }
+
 
     }
     @Override
@@ -150,15 +165,93 @@ public class MainActivity extends BaseActivity implements LocationSource, AMapLo
     }
 
     @Override
-    public void onLocationChanged(AMapLocation amapLocation) {
-        if (mListener != null&&amapLocation != null) {
-            if (amapLocation != null
-                    &&amapLocation.getErrorCode() == 0) {
-                mListener.onLocationChanged(amapLocation);// 显示系统小蓝点
+    public void onLocationChanged(AMapLocation aMapLocation) {
+        if (mListener != null&&aMapLocation != null) {
+            if (aMapLocation.getErrorCode() == 0) {
+                mListener.onLocationChanged(aMapLocation);// 显示系统小蓝点
+
+                /*
+                StringBuilder stringBuilder = new StringBuilder();
+                //定位成功回调信息，设置相关消息
+                int type = aMapLocation.getLocationType();
+                String address = aMapLocation.getAddress();
+                stringBuilder.append(type+address);
+                city = aMapLocation.getCity();
+                */
+                //获得小点
+                if (latLonPoint==null){
+                    latLonPoint = new LatLonPoint(aMapLocation.getLatitude(),aMapLocation.getLongitude());
+                }else {
+                    latLonPoint.setLatitude(aMapLocation.getLatitude());
+                    latLonPoint.setLongitude(aMapLocation.getLongitude());
+                }
+
             } else {
-                String errText = "定位失败," + amapLocation.getErrorCode()+ ": " + amapLocation.getErrorInfo();
+                String errText = "定位失败," + aMapLocation.getErrorCode()+ ": " + aMapLocation.getErrorInfo();
                 Log.e("AmapErr",errText);
             }
         }
+    }
+    /**
+     * 搜索附近点
+     */
+    private void searchPoint(){
+        query = new PoiSearch.Query("", "购物服务", "");
+        // keyWord表示搜索字符串，第二个参数表示POI搜索类型，默认为：生活服务、餐饮服务、商务住宅
+        //共分为以下20种：汽车服务|汽车销售|
+        //汽车维修|摩托车服务|餐饮服务|购物服务|生活服务|体育休闲服务|医疗保健服务|
+        //住宿服务|风景名胜|商务住宅|政府机构及社会团体|科教文化服务|交通设施服务|
+        //金融保险服务|公司企业|道路附属设施|地名地址信息|公共设施
+        //cityCode表示POI搜索区域，（这里可以传空字符串，空字符串代表全国在全国范围内进行搜索）
+        query.setPageSize(10);// 设置每页最多返回多少条poiitem
+        query.setPageNum(1);//设置查第一页
+        PoiSearch poiSearch = new PoiSearch(this,query);
+        if (latLonPoint!=null){
+            searchBound = new PoiSearch.SearchBound(latLonPoint,2000);
+            poiSearch.setBound(searchBound);
+        }//设置周边搜索的中心点以及区域
+        poiSearch.setOnPoiSearchListener(this);//设置数据返回的监听器
+        poiSearch.searchPOIAsyn();//开始搜索
+    }
+
+    @Override
+    public void onPoiSearched(PoiResult poiResult, int i) {
+        if (i == 1000) {
+            Log.i("---","查询结果:"+i);
+            if (poiResult != null && poiResult.getQuery() != null) {// 搜索poi的结果
+                if (poiResult.getQuery().equals(query)) {// 是否是同一条
+                    //poiResults = poiResult;
+                    // 取得搜索到的poiitems有多少页
+                    List<PoiItem> poiItems = poiResult.getPois();// 取得第一页的poiitem数据，页数从数字0开始
+                    List<SuggestionCity> suggestionCities = poiResult
+                            .getSearchSuggestionCitys();// 当搜索不到poiitem数据时，会返回含有搜索关键字的城市信息
+
+                    if (poiItems != null && poiItems.size() > 0) {
+                        aMap.clear();// 清理之前的图标
+                        PoiOverlay poiOverlay = new PoiOverlay(aMap, poiItems);
+                        poiOverlay.removeFromMap();
+                        poiOverlay.addToMap();
+                        poiOverlay.zoomToSpan();
+                        /*
+                    } else if (suggestionCities != null
+                            && suggestionCities.size() > 0) {
+                        //showSuggestCity(suggestionCities);
+                        */
+                    } else {
+                        Toast.makeText(MainActivity.this, "未找到结果",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            } else {
+                Toast.makeText(MainActivity.this, "该距离内没有找到结果",Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Log.i("---","查询结果:"+i);
+            Toast.makeText(MainActivity.this, "异常代码---"+i,Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onPoiItemSearched(PoiItem poiItem, int i) {
+
     }
 }

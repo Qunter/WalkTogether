@@ -8,11 +8,11 @@ import com.walktogether.R;
 import com.walktogether.base.BaseActivity;
 
 /**
- * Created by Administrator on 2017/5/15.
+ * Created by Administrator on 2017/5/17.
  */
 
-public class AroundActivity extends BaseActivity implements View.OnClickListener {
-    private ImageView aroundBackBtn;
+public class FriendAddActivity extends BaseActivity implements View.OnClickListener {
+    private ImageView friendAddBackBtn;
     @Override
     protected void initVariablesAndService() {
 
@@ -20,9 +20,9 @@ public class AroundActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_around);
-        aroundBackBtn = (ImageView) findViewById(R.id.around_backBtn);
-        aroundBackBtn.setOnClickListener(this);
+        setContentView(R.layout.activity_around_add);
+        friendAddBackBtn = (ImageView) findViewById(R.id.around_backBtn);
+        friendAddBackBtn.setOnClickListener(this);
     }
 
     @Override

@@ -30,4 +30,26 @@
                 android:textColor="#dd000000" />
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
+    <LinearLayout
+        android:id="@+id/friend_add_linearlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <EditText
+            android:id="@+id/friend_addEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:hint="请输入搜索用户的昵称"
+            android:layout_marginTop="20dp"
+            android:inputType="text" />
+        <Button
+            android:id="@+id/friend_addBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ripple_button"
+            android:textColor="#ffffff"
+            android:text="搜索"
+            android:layout_margin="20dp"/>
+    </LinearLayout>
 </LinearLayout>

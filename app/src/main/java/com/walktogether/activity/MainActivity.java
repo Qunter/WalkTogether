@@ -1,6 +1,7 @@
 package com.walktogether.activity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +25,8 @@ import com.walktogether.R;
 import com.walktogether.base.BaseActivity;
 import com.walktogether.view.XCArcMenuView;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -62,6 +65,10 @@ public class MainActivity extends BaseActivity implements LocationSource, AMapLo
                 String tag = (String) view.getTag();
                 switch (tag){
                     case "around":
+                        Intent intent = new Intent(getApplicationContext(),AroundActivity.class);
+                        List<LatLonPoint> latLonPointObjList = new ArrayList<LatLonPoint>();
+                        latLonPointObjList.add(latLonPoint);
+                        intent.putExtra("latLonPoint", (Serializable) latLonPointObjList);
                         startActivity(AroundActivity.class);
                         break;
                     case "friend":

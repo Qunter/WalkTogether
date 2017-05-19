@@ -16,7 +16,7 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:theme="@style/Theme.AppCompat.Light">
             <ImageView
-                android:id="@+id/around_backBtn"
+                android:id="@+id/friend_add_backBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"

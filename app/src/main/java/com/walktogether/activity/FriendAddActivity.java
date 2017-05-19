@@ -88,7 +88,7 @@ public class FriendAddActivity extends BaseActivity implements View.OnClickListe
         setContentView(R.layout.activity_friend_add);
         friendAddEt = (EditText) findViewById(R.id.friend_addEt);
         friendAddTv = (TextView) findViewById(R.id.friend_addBtn);
-        friendAddBackBtn = (ImageView) findViewById(R.id.friend_backBtn);
+        friendAddBackBtn = (ImageView) findViewById(R.id.friend_add_backBtn);
         friendAddLinLayout = (LinearLayout) findViewById(R.id.friend_add_linearlayout);
 
         friendAddTv.setOnClickListener(this);
@@ -263,7 +263,7 @@ public class FriendAddActivity extends BaseActivity implements View.OnClickListe
                 }
                 handler.sendEmptyMessage(SEARCHUSERINFO);
                 break;
-            case R.id.friend_backBtn:
+            case R.id.friend_add_backBtn:
                 finish();
                 break;
         }

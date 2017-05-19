@@ -2,6 +2,7 @@ package com.walktogether.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -21,7 +22,7 @@ import java.util.List;
 public class AroundActivity extends BaseActivity implements View.OnClickListener {
     private ImageView aroundBackBtn;
     private Button searchShopBtn;
-    private List<LatLonPoint> latLonPointObjList = new ArrayList<LatLonPoint>();
+    private ArrayList<LatLonPoint> latLonPointObjList = new ArrayList<LatLonPoint>();
     @Override
     protected void initVariablesAndService() {
 
@@ -31,7 +32,8 @@ public class AroundActivity extends BaseActivity implements View.OnClickListener
     protected void initViews(Bundle savedInstanceState) {
         setContentView(R.layout.activity_around);
         //获取传递来的定位点数据
-        latLonPointObjList = (List<LatLonPoint>) getIntent().getSerializableExtra("latLonPoint");
+        latLonPointObjList = (ArrayList<LatLonPoint>) getIntent().getSerializableExtra("latLonPoint");
+        Log.e("AroundActivity", ""+latLonPointObjList.size());
         aroundBackBtn = (ImageView) findViewById(R.id.around_backBtn);
         aroundBackBtn.setOnClickListener(this);
         searchShopBtn = (Button) findViewById(R.id.around_search_shopBtn);
@@ -47,7 +49,7 @@ public class AroundActivity extends BaseActivity implements View.OnClickListener
             case R.id.around_search_shopBtn:
                 Intent intent = new Intent(this,AroundListActivity.class);
                 intent.putExtra("criteria","购物服务");
-                intent.putExtra("latLonPoint", (Serializable) latLonPointObjList);
+                intent.putExtra("latLonPoint", latLonPointObjList);
                 startActivity(intent);
                 break;
         }

@@ -1,6 +1,8 @@
 package com.walktogether.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,6 +17,7 @@ import com.amap.api.services.poisearch.PoiSearch;
 import com.walktogether.R;
 import com.walktogether.base.BaseActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,10 +30,22 @@ public class AroundListActivity extends BaseActivity implements PoiSearch.OnPoiS
     private String searchKey;
     private PoiSearch.Query query;
     private PoiSearch.SearchBound searchBound;
+    private final int SEARCHAROUNDDATA=0x00;
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case SEARCHAROUNDDATA:
+                    searchAroundData(latLonPoint,searchKey);
+                    break;
+            }
+        }
+    };
     @Override
     protected void initVariablesAndService() {
         //获取传递来的定位点数据
-        List<LatLonPoint> latLonPointObjList = (List<LatLonPoint>) getIntent().getSerializableExtra("latLonPoint");
+        ArrayList<LatLonPoint> latLonPointObjList = (ArrayList<LatLonPoint>) getIntent().getSerializableExtra("latLonPoint");
         latLonPoint = latLonPointObjList.get(0);
         //获取搜索关键字
         searchKey = getIntent().getExtras().getString("criteria");
@@ -38,10 +53,14 @@ public class AroundListActivity extends BaseActivity implements PoiSearch.OnPoiS
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_around_list);
+        setContentView(R.layout.test);
+        handler.sendEmptyMessage(SEARCHAROUNDDATA);
+        /*
+        setContentView(R.layout.activity_around_list);\
         aroundRecyclerView = (RecyclerView) findViewById(R.id.around_recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         aroundRecyclerView.setLayoutManager(layoutManager);
+        */
         //aroundRecyclerView.setAdapter(adapter);
     }
     /**

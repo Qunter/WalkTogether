@@ -66,10 +66,11 @@ public class MainActivity extends BaseActivity implements LocationSource, AMapLo
                 switch (tag){
                     case "around":
                         Intent intent = new Intent(getApplicationContext(),AroundActivity.class);
-                        List<LatLonPoint> latLonPointObjList = new ArrayList<LatLonPoint>();
+                        ArrayList<LatLonPoint> latLonPointObjList = new ArrayList<LatLonPoint>();
                         latLonPointObjList.add(latLonPoint);
-                        intent.putExtra("latLonPoint", (Serializable) latLonPointObjList);
-                        startActivity(AroundActivity.class);
+                        Log.e("MainActivity", ""+latLonPointObjList.size() );
+                        intent.putExtra("latLonPoint", latLonPointObjList);
+                        startActivity(intent);
                         break;
                     case "friend":
                         startActivity(FriendActivity.class);

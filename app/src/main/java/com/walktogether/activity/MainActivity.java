@@ -35,7 +35,6 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity implements LocationSource, AMapLocationListener, PoiSearch.OnPoiSearchListener {
     private XCArcMenuView menuView;
-
     private MapView map = null;
     private AMap aMap = null;
     private OnLocationChangedListener mListener;

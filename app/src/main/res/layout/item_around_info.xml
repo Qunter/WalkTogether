@@ -11,13 +11,12 @@
     app:cardCornerRadius="0dp"
     app:cardElevation="2dp">
     <LinearLayout
-        android:id="@+id/event_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="10dp">
         <TextView
-            android:id="@+id/around__item_titleTv"
+            android:id="@+id/item_around_titleTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
@@ -27,7 +26,7 @@
             android:textColor="#555555"
             android:textSize="18sp"/>
         <TextView
-            android:id="@+id/event_time_start"
+            android:id="@+id/item_around_addressTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
@@ -37,7 +36,7 @@
             android:textColor="#555555"
             android:textSize="14sp"/>
         <TextView
-            android:id="@+id/event_time_end"
+            android:id="@+id/item_around_distance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"

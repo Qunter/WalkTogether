@@ -6,6 +6,8 @@ import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.amap.api.maps2d.overlay.PoiOverlay;
@@ -15,7 +17,9 @@ import com.amap.api.services.core.SuggestionCity;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
 import com.walktogether.R;
+import com.walktogether.adapter.AroundListAdapter;
 import com.walktogether.base.BaseActivity;
+import com.walktogether.entity.PoiInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,11 +30,14 @@ import java.util.List;
 
 public class AroundListActivity extends BaseActivity implements PoiSearch.OnPoiSearchListener {
     private RecyclerView aroundRecyclerView;
+    private AroundListAdapter adapter;
     private LatLonPoint latLonPoint;
     private String searchKey;
     private PoiSearch.Query query;
     private PoiSearch.SearchBound searchBound;
-    private final int SEARCHAROUNDDATA=0x00;
+    private ImageView aroundListBackBtn;
+    private final int SEARCHAROUNDDATA=0x00,LOADRECYCLERVIEW=0x01;
+    private List<PoiInfo> poiInfoList = new ArrayList<PoiInfo>();
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -38,6 +45,9 @@ public class AroundListActivity extends BaseActivity implements PoiSearch.OnPoiS
             switch (msg.what){
                 case SEARCHAROUNDDATA:
                     searchAroundData(latLonPoint,searchKey);
+                    break;
+                case LOADRECYCLERVIEW:
+                    loadAroundRecycleView();
                     break;
             }
         }
@@ -53,15 +63,20 @@ public class AroundListActivity extends BaseActivity implements PoiSearch.OnPoiS
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
-        setContentView(R.layout.test);
-        handler.sendEmptyMessage(SEARCHAROUNDDATA);
-        /*
-        setContentView(R.layout.activity_around_list);\
+        //setContentView(R.layout.test);
+        setContentView(R.layout.activity_around_list);
         aroundRecyclerView = (RecyclerView) findViewById(R.id.around_recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         aroundRecyclerView.setLayoutManager(layoutManager);
-        */
+        handler.sendEmptyMessage(SEARCHAROUNDDATA);
         //aroundRecyclerView.setAdapter(adapter);
+        aroundListBackBtn = (ImageView) findViewById(R.id.around_list_backBtn);
+        aroundListBackBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
     /**
      * 以Intent内定位点以及关键字获取周边数据
@@ -107,9 +122,14 @@ public class AroundListActivity extends BaseActivity implements PoiSearch.OnPoiS
                         poiOverlay.zoomToSpan();
                         */
                         for(PoiItem poiItem:poiItems){
+                            poiInfoList.add(new PoiInfo(poiItem.getTitle(),poiItem.getSnippet(),poiItem.getDistance()));
+                            /*
                             Log.e("poiItem", poiItem.getTitle());
                             Log.e("poiItem", poiItem.getSnippet());
+                            Log.e("poiItem", poiItem.getDistance()+"米" );
+                            */
                         }
+                        handler.sendEmptyMessage(LOADRECYCLERVIEW);
                         /*
                     } else if (suggestionCities != null
                             && suggestionCities.size() > 0) {
@@ -131,5 +151,17 @@ public class AroundListActivity extends BaseActivity implements PoiSearch.OnPoiS
     @Override
     public void onPoiItemSearched(PoiItem poiItem, int i) {
 
+    }
+    /**
+     * 加载好友信息至RecycleView
+     */
+    private void loadAroundRecycleView(){
+        adapter = new AroundListAdapter(getApplicationContext(),poiInfoList,aroundRecyclerView);
+        adapter.setOnItemClickListener(new AroundListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+            }
+        });
+        aroundRecyclerView.setAdapter(adapter);
     }
 }

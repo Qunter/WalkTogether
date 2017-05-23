@@ -152,12 +152,12 @@
         "source": "H:\\WalkTogether\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f4e2.png"
     },
     {
-        "merged": "H:\\WalkTogether\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_back_icon.png",
-        "source": "H:\\WalkTogether\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_back_icon.png"
-    },
-    {
         "merged": "H:\\WalkTogether\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_rt_loc_other.png",
         "source": "H:\\WalkTogether\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_rt_loc_other.png"
+    },
+    {
+        "merged": "H:\\WalkTogether\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_back_icon.png",
+        "source": "H:\\WalkTogether\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_back_icon.png"
     },
     {
         "merged": "H:\\WalkTogether\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_select_check_sel.png",
@@ -544,12 +544,12 @@
         "source": "H:\\WalkTogether\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f436.png"
     },
     {
-        "merged": "H:\\WalkTogether\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_file_icon_file.png",
-        "source": "H:\\WalkTogether\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_file_icon_file.png"
-    },
-    {
         "merged": "H:\\WalkTogether\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_image_error.png",
         "source": "H:\\WalkTogether\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_image_error.png"
+    },
+    {
+        "merged": "H:\\WalkTogether\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_file_icon_file.png",
+        "source": "H:\\WalkTogether\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_file_icon_file.png"
     },
     {
         "merged": "H:\\WalkTogether\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_star_hover.png",

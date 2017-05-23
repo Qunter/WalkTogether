@@ -1,10 +1,12 @@
 package com.walktogether.activity;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
@@ -16,13 +18,23 @@ import com.amap.api.maps2d.AMapOptions;
 import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.overlay.PoiOverlay;
+import com.amap.api.services.core.AMapException;
 import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.core.PoiItem;
 import com.amap.api.services.core.SuggestionCity;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
+import com.amap.api.services.route.BusRouteResult;
+import com.amap.api.services.route.DriveRouteResult;
+import com.amap.api.services.route.RideRouteResult;
+import com.amap.api.services.route.RouteSearch;
+import com.amap.api.services.route.WalkPath;
+import com.amap.api.services.route.WalkRouteResult;
 import com.walktogether.R;
 import com.walktogether.base.BaseActivity;
+import com.walktogether.engine.overlay.WalkRouteOverlay;
+import com.walktogether.engine.util.AMapUtil;
+import com.walktogether.engine.util.ToastUtil;
 import com.walktogether.view.XCArcMenuView;
 
 import java.io.Serializable;
@@ -33,7 +45,7 @@ import java.util.List;
  * Created by Administrator on 2017/5/7.
  */
 
-public class MainActivity extends BaseActivity implements LocationSource, AMapLocationListener, PoiSearch.OnPoiSearchListener {
+public class MainActivity extends BaseActivity implements LocationSource, AMapLocationListener, PoiSearch.OnPoiSearchListener, RouteSearch.OnRouteSearchListener {
     private XCArcMenuView menuView;
     private MapView map = null;
     private AMap aMap = null;
@@ -44,6 +56,12 @@ public class MainActivity extends BaseActivity implements LocationSource, AMapLo
     private PoiSearch.SearchBound searchBound;
     private LatLonPoint latLonPoint;
     private PoiSearch.Query query;
+    private ProgressDialog progDialog = null;// 搜索时进度条
+    private LatLonPoint mEndPoint = new LatLonPoint(39.997796,116.468939);//终点，39.997796,116.468939
+    private final int ROUTE_TYPE_WALK = 3;
+    private RouteSearch mRouteSearch;
+    private WalkRouteResult mWalkRouteResult;
+    private WalkRouteOverlay walkRouteOverlay;
     @Override
     protected void initVariablesAndService() {
         if (hasPermission(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION)) {
@@ -89,6 +107,9 @@ public class MainActivity extends BaseActivity implements LocationSource, AMapLo
             aMap = map.getMap();
             initAMap();
         }
+        mRouteSearch = new RouteSearch(this);
+        mRouteSearch.setRouteSearchListener(this);
+
 
 
     }
@@ -256,6 +277,96 @@ public class MainActivity extends BaseActivity implements LocationSource, AMapLo
 
     @Override
     public void onPoiItemSearched(PoiItem poiItem, int i) {
+
+    }
+    /**
+     * 开始搜索路径规划方案
+     */
+    public void searchRouteResult(int routeType) {
+        /*
+        if (mStartPoint == null) {
+            ToastUtil.show(getApplicationContext(), "定位中，稍后再试...");
+            return;
+        }
+        */
+        if (mEndPoint == null) {
+            ToastUtil.show(getApplicationContext(), "终点未设置");
+        }
+        showProgressDialog();
+        final RouteSearch.FromAndTo fromAndTo = new RouteSearch.FromAndTo(
+                latLonPoint, mEndPoint);
+        if (routeType == ROUTE_TYPE_WALK) {// 步行路径规划
+            RouteSearch.WalkRouteQuery query = new RouteSearch.WalkRouteQuery(fromAndTo);
+            mRouteSearch.calculateWalkRouteAsyn(query);// 异步路径规划步行模式查询
+        }
+    }
+    /**
+     * 显示进度框
+     */
+    private void showProgressDialog() {
+        if (progDialog == null)
+            progDialog = new ProgressDialog(this);
+        progDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progDialog.setIndeterminate(false);
+        progDialog.setCancelable(true);
+        progDialog.setMessage("正在搜索");
+        progDialog.show();
+    }
+
+    /**
+     * 隐藏进度框
+     */
+    private void dissmissProgressDialog() {
+        if (progDialog != null) {
+            progDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void onBusRouteSearched(BusRouteResult busRouteResult, int i) {
+
+    }
+
+    @Override
+    public void onDriveRouteSearched(DriveRouteResult driveRouteResult, int i) {
+
+    }
+
+    @Override
+    public void onWalkRouteSearched(WalkRouteResult walkRouteResult, int errorCode) {
+        dissmissProgressDialog();
+        aMap.clear();// 清理地图上的所有覆盖物
+        if (errorCode == AMapException.CODE_AMAP_SUCCESS) {
+            if (walkRouteResult != null && walkRouteResult.getPaths() != null) {
+                if (walkRouteResult.getPaths().size() > 0) {
+                    mWalkRouteResult = walkRouteResult;
+                    final WalkPath walkPath = mWalkRouteResult.getPaths()
+                            .get(0);
+                    if (walkRouteOverlay != null){
+                        walkRouteOverlay.removeFromMap();
+                    }
+                    walkRouteOverlay = new WalkRouteOverlay(
+                            this, aMap, walkPath,
+                            mWalkRouteResult.getStartPos(),
+                            mWalkRouteResult.getTargetPos());
+                    walkRouteOverlay.addToMap();
+                    walkRouteOverlay.zoomToSpan();
+                    int dis = (int) walkPath.getDistance();
+                    int dur = (int) walkPath.getDuration();
+                    String des = AMapUtil.getFriendlyTime(dur)+"("+ AMapUtil.getFriendlyLength(dis)+")";
+                } else if (walkRouteResult != null && walkRouteResult.getPaths() == null) {
+                    ToastUtil.show(getApplicationContext(), "GG");
+                }
+            } else {
+                ToastUtil.show(getApplicationContext(), "GG");
+            }
+        } else {
+            ToastUtil.showerror(this.getApplicationContext(), errorCode);
+        }
+    }
+
+    @Override
+    public void onRideRouteSearched(RideRouteResult rideRouteResult, int i) {
 
     }
 }

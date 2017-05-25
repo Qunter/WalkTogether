@@ -2,7 +2,10 @@ package com.walktogether.activity;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -57,11 +60,22 @@ public class MainActivity extends BaseActivity implements LocationSource, AMapLo
     private LatLonPoint latLonPoint;
     private PoiSearch.Query query;
     private ProgressDialog progDialog = null;// 搜索时进度条
-    private LatLonPoint mEndPoint = new LatLonPoint(39.997796,116.468939);//终点，39.997796,116.468939
+    //private LatLonPoint mEndPoint = new LatLonPoint(39.997796,116.468939);//终点，39.997796,116.468939
     private final int ROUTE_TYPE_WALK = 3;
+    private final String AROUNDPOI = "Android.intent.action.aroundpoi";
     private RouteSearch mRouteSearch;
     private WalkRouteResult mWalkRouteResult;
     private WalkRouteOverlay walkRouteOverlay;
+    private LatLonPoint mEndPoint;
+    private BroadcastReceiver aroundPoiReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            ArrayList<LatLonPoint> mEndPointList = (ArrayList<LatLonPoint>) intent.getSerializableExtra("endPoint");
+            mEndPoint = mEndPointList.get(0);
+            Log.e("onReceive", mEndPoint.getLatitude()+"");
+            searchRouteResult(ROUTE_TYPE_WALK);
+        }
+    };
     @Override
     protected void initVariablesAndService() {
         if (hasPermission(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION)) {
@@ -110,7 +124,7 @@ public class MainActivity extends BaseActivity implements LocationSource, AMapLo
         mRouteSearch = new RouteSearch(this);
         mRouteSearch.setRouteSearchListener(this);
 
-
+        registerReceiver(aroundPoiReceiver, new IntentFilter(AROUNDPOI));
 
     }
     @Override
@@ -121,6 +135,8 @@ public class MainActivity extends BaseActivity implements LocationSource, AMapLo
         if(null != mlocationClient){
             mlocationClient.onDestroy();
         }
+        //在activity执行onDestroy时执行unregisterReceiver，销毁广播
+        unregisterReceiver(aroundPoiReceiver);
     }
     @Override
     protected void onResume() {
@@ -312,7 +328,6 @@ public class MainActivity extends BaseActivity implements LocationSource, AMapLo
         progDialog.setMessage("正在搜索");
         progDialog.show();
     }
-
     /**
      * 隐藏进度框
      */

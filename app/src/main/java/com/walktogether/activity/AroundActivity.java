@@ -51,6 +51,7 @@ public class AroundActivity extends BaseActivity implements View.OnClickListener
                 intent.putExtra("criteria","购物服务");
                 intent.putExtra("latLonPoint", latLonPointObjList);
                 startActivity(intent);
+                finish();
                 break;
         }
     }

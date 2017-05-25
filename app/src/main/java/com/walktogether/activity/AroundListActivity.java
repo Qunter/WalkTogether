@@ -1,5 +1,6 @@
 package com.walktogether.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -37,6 +38,7 @@ public class AroundListActivity extends BaseActivity implements PoiSearch.OnPoiS
     private PoiSearch.SearchBound searchBound;
     private ImageView aroundListBackBtn;
     private final int SEARCHAROUNDDATA=0x00,LOADRECYCLERVIEW=0x01;
+    private final String AROUNDPOI = "Android.intent.action.aroundpoi";
     private List<PoiInfo> poiInfoList = new ArrayList<PoiInfo>();
     private Handler handler = new Handler(){
         @Override
@@ -122,7 +124,7 @@ public class AroundListActivity extends BaseActivity implements PoiSearch.OnPoiS
                         poiOverlay.zoomToSpan();
                         */
                         for(PoiItem poiItem:poiItems){
-                            poiInfoList.add(new PoiInfo(poiItem.getTitle(),poiItem.getSnippet(),poiItem.getDistance()));
+                            poiInfoList.add(new PoiInfo(poiItem.getTitle(),poiItem.getSnippet(),poiItem.getDistance(),poiItem.getLatLonPoint()));
                             /*
                             Log.e("poiItem", poiItem.getTitle());
                             Log.e("poiItem", poiItem.getSnippet());
@@ -153,13 +155,20 @@ public class AroundListActivity extends BaseActivity implements PoiSearch.OnPoiS
 
     }
     /**
-     * 加载好友信息至RecycleView
+     * 加载周边信息至RecycleView
      */
     private void loadAroundRecycleView(){
         adapter = new AroundListAdapter(getApplicationContext(),poiInfoList,aroundRecyclerView);
         adapter.setOnItemClickListener(new AroundListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                Intent intent = new Intent(AROUNDPOI);
+                ArrayList<LatLonPoint> endPointList = new ArrayList<LatLonPoint>();
+                endPointList.add(poiInfoList.get(position).getPoint());
+                Log.e("loadAroundRecycleView", poiInfoList.get(position).getPoint().getLatitude()+"" );
+                intent.putExtra("endPoint", endPointList);
+                sendBroadcast(intent);
+                finish();
             }
         });
         aroundRecyclerView.setAdapter(adapter);

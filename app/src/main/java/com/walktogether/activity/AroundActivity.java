@@ -21,7 +21,7 @@ import java.util.List;
 
 public class AroundActivity extends BaseActivity implements View.OnClickListener {
     private ImageView aroundBackBtn;
-    private Button searchShopBtn;
+    private Button searchShopBtn,searchRestaurantBtn;
     private ArrayList<LatLonPoint> latLonPointObjList = new ArrayList<LatLonPoint>();
     @Override
     protected void initVariablesAndService() {
@@ -38,6 +38,8 @@ public class AroundActivity extends BaseActivity implements View.OnClickListener
         aroundBackBtn.setOnClickListener(this);
         searchShopBtn = (Button) findViewById(R.id.around_search_shopBtn);
         searchShopBtn.setOnClickListener(this);
+        searchRestaurantBtn = (Button) findViewById(R.id.around_search_restaurantBtn);
+        searchRestaurantBtn.setOnClickListener(this);
     }
 
     @Override
@@ -47,12 +49,20 @@ public class AroundActivity extends BaseActivity implements View.OnClickListener
                 finish();
                 break;
             case R.id.around_search_shopBtn:
-                Intent intent = new Intent(this,AroundListActivity.class);
-                intent.putExtra("criteria","购物服务");
-                intent.putExtra("latLonPoint", latLonPointObjList);
-                startActivity(intent);
+                Intent shopIntent = new Intent(this,AroundListActivity.class);
+                shopIntent.putExtra("criteria","购物服务");
+                shopIntent.putExtra("latLonPoint", latLonPointObjList);
+                startActivity(shopIntent);
                 finish();
                 break;
+            case R.id.around_search_restaurantBtn:
+                Intent restaurantIntent = new Intent(this,AroundListActivity.class);
+                restaurantIntent.putExtra("criteria","餐饮服务");
+                restaurantIntent.putExtra("latLonPoint", latLonPointObjList);
+                startActivity(restaurantIntent);
+                finish();
+                break;
+            //住宿服务,体育休闲服务,交通设施服务
         }
     }
 }

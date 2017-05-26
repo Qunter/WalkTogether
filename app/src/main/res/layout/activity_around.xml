@@ -39,4 +39,12 @@
         android:text="查看附近的商店"
         android:textColor="#ffffff"
         android:background="@drawable/ripple_button"/>
+    <Button
+        android:id="@+id/around_search_restaurantBtn"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="查看附近的饭店"
+        android:textColor="#ffffff"
+        android:background="@drawable/ripple_button"/>
 </LinearLayout>

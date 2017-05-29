@@ -11,9 +11,7 @@ import com.amap.api.services.core.LatLonPoint;
 import com.walktogether.R;
 import com.walktogether.base.BaseActivity;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Administrator on 2017/5/15.
@@ -21,7 +19,7 @@ import java.util.List;
 
 public class AroundActivity extends BaseActivity implements View.OnClickListener {
     private ImageView aroundBackBtn;
-    private Button searchShopBtn,searchRestaurantBtn;
+    private Button searchShopBtn,searchRestaurantBtn,searchHotelBtn,searchGymBtn,searchParkingLotBtn;
     private ArrayList<LatLonPoint> latLonPointObjList = new ArrayList<LatLonPoint>();
     @Override
     protected void initVariablesAndService() {
@@ -40,6 +38,12 @@ public class AroundActivity extends BaseActivity implements View.OnClickListener
         searchShopBtn.setOnClickListener(this);
         searchRestaurantBtn = (Button) findViewById(R.id.around_search_restaurantBtn);
         searchRestaurantBtn.setOnClickListener(this);
+        searchHotelBtn = (Button) findViewById(R.id.around_search_hotelBtn);
+        searchHotelBtn.setOnClickListener(this);
+        searchGymBtn = (Button) findViewById(R.id.around_search_gymBtn);
+        searchGymBtn.setOnClickListener(this);
+        searchParkingLotBtn = (Button) findViewById(R.id.around_search_parkingLotBtn);
+        searchParkingLotBtn.setOnClickListener(this);
     }
 
     @Override
@@ -62,7 +66,27 @@ public class AroundActivity extends BaseActivity implements View.OnClickListener
                 startActivity(restaurantIntent);
                 finish();
                 break;
-            //住宿服务,体育休闲服务,交通设施服务
+            case R.id.around_search_hotelBtn:
+                Intent hotelIntent = new Intent(this,AroundListActivity.class);
+                hotelIntent.putExtra("criteria","住宿服务");
+                hotelIntent.putExtra("latLonPoint", latLonPointObjList);
+                startActivity(hotelIntent);
+                finish();
+                break;
+            case R.id.around_search_gymBtn:
+                Intent gymIntent = new Intent(this,AroundListActivity.class);
+                gymIntent.putExtra("criteria","体育休闲服务");
+                gymIntent.putExtra("latLonPoint", latLonPointObjList);
+                startActivity(gymIntent);
+                finish();
+                break;
+            case R.id.around_search_parkingLotBtn:
+                Intent trafficIntent = new Intent(this,AroundListActivity.class);
+                trafficIntent.putExtra("criteria","交通设施服务");
+                trafficIntent.putExtra("latLonPoint", latLonPointObjList);
+                startActivity(trafficIntent);
+                finish();
+                break;
         }
     }
 }

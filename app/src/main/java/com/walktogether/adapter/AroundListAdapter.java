@@ -49,7 +49,7 @@ public class AroundListAdapter extends RecyclerView.Adapter<AroundListAdapter.Vi
 
     @Override
     public void onBindViewHolder(final AroundListAdapter.ViewHolder holder, final int position) {
-        //holder.setIsRecyclable(false);
+        holder.setIsRecyclable(false);
         holder.aroundTitleTv.setText(poiInfoList.get(position).getTitle());
         holder.aroundAddressTv.setText(poiInfoList.get(position).getSnippet());
         holder.aroundDistanceTv.setText(poiInfoList.get(position).getDistance()+"米");

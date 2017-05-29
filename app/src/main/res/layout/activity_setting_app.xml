@@ -17,7 +17,7 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:theme="@style/Theme.AppCompat.Light">
             <ImageView
-                android:id="@+id/around_backBtn"
+                android:id="@+id/setting_app_backBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
@@ -26,49 +26,31 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="周边"
+                android:text="软件相关设置"
                 android:textSize="22sp"
                 android:textColor="#dd000000" />
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
-    <Button
-        android:id="@+id/around_search_shopBtn"
+    <EditText
+        android:id="@+id/setting_app_sizeEt"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="查看附近的商店"
-        android:textColor="#ffffff"
-        android:background="@drawable/ripple_button"/>
-    <Button
-        android:id="@+id/around_search_restaurantBtn"
+        android:hint="周边列表中列表显示项个数"
+        android:inputType="number"/>
+    <EditText
+        android:id="@+id/setting_app_rangeEt"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="查看附近的餐厅"
-        android:textColor="#ffffff"
-        android:background="@drawable/ripple_button"/>
+        android:hint="周边列表搜索范围"
+        android:inputType="number"/>
     <Button
-        android:id="@+id/around_search_hotelBtn"
+        android:id="@+id/setting_app_saveBtn"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="查看附近的旅馆"
-        android:textColor="#ffffff"
-        android:background="@drawable/ripple_button"/>
-    <Button
-        android:id="@+id/around_search_gymBtn"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="查看附近的体育休闲场所"
-        android:textColor="#ffffff"
-        android:background="@drawable/ripple_button"/>
-    <Button
-        android:id="@+id/around_search_parkingLotBtn"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="查看附近的停车场"
+        android:text="保存设置"
         android:textColor="#ffffff"
         android:background="@drawable/ripple_button"/>
 </LinearLayout>

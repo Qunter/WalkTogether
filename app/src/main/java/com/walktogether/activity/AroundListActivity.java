@@ -1,6 +1,7 @@
 package com.walktogether.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -40,6 +41,7 @@ public class AroundListActivity extends BaseActivity implements PoiSearch.OnPoiS
     private final int SEARCHAROUNDDATA=0x00,LOADRECYCLERVIEW=0x01;
     private final String AROUNDPOI = "Android.intent.action.aroundpoi";
     private List<PoiInfo> poiInfoList = new ArrayList<PoiInfo>();
+    private int aroundSearchSize,aroundSearchRange;
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -61,6 +63,11 @@ public class AroundListActivity extends BaseActivity implements PoiSearch.OnPoiS
         latLonPoint = latLonPointObjList.get(0);
         //获取搜索关键字
         searchKey = getIntent().getExtras().getString("criteria");
+        //获取列表显示数据条数以及搜索范围
+        SharedPreferences appSettings = getSharedPreferences("appSettings", 0);
+        aroundSearchSize = appSettings.getInt("aroundSearchSize",20);
+        aroundSearchRange = appSettings.getInt("aroundSearchRange",2000);
+        Log.e("initVariablesAndService", aroundSearchSize+"" );
     }
 
     @Override
@@ -93,7 +100,7 @@ public class AroundListActivity extends BaseActivity implements PoiSearch.OnPoiS
         //金融保险服务|公司企业|道路附属设施|地名地址信息|公共设施
         //cityCode表示POI搜索区域，（这里可以传空字符串，空字符串代表全国在全国范围内进行搜索）
         query.setPageSize(10);// 设置每页最多返回多少条poiitem
-        query.setPageNum(1);//设置查第一页
+        query.setPageNum(0);//设置查第一页
         PoiSearch poiSearch = new PoiSearch(this,query);
         if (latLonPoint!=null){
             searchBound = new PoiSearch.SearchBound(latLonPoint,2000);
@@ -172,5 +179,6 @@ public class AroundListActivity extends BaseActivity implements PoiSearch.OnPoiS
             }
         });
         aroundRecyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 }

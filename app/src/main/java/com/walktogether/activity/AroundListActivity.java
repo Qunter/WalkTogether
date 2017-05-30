@@ -67,7 +67,7 @@ public class AroundListActivity extends BaseActivity implements PoiSearch.OnPoiS
         SharedPreferences appSettings = getSharedPreferences("appSettings", 0);
         aroundSearchSize = appSettings.getInt("aroundSearchSize",20);
         aroundSearchRange = appSettings.getInt("aroundSearchRange",2000);
-        Log.e("initVariablesAndService", aroundSearchSize+"" );
+        //Log.e("initVariablesAndService", aroundSearchSize+"" );
     }
 
     @Override

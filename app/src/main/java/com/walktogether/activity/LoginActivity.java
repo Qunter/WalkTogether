@@ -11,6 +11,7 @@ import com.walktogether.base.BaseActivity;
 import com.walktogether.entity.UserInfo;
 
 import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
 
@@ -28,6 +29,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     @Override
     protected void initViews(Bundle savedInstanceState) {
         setContentView(R.layout.activity_login);
+        BmobUser bmobUser = BmobUser.getCurrentUser();
+        if(bmobUser != null){
+            startActivity(MainActivity.class);
+            this.finish();
+        }
         loginBtn = (Button) findViewById(R.id.login_loginBtn);
         registerBtn = (Button) findViewById(R.id.login_registerBtn);
         usernameEt = (EditText) findViewById(R.id.login_usernameEt);

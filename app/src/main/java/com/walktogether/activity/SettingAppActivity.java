@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.walktogether.R;
@@ -17,6 +18,7 @@ import com.walktogether.base.BaseActivity;
 public class SettingAppActivity extends BaseActivity implements View.OnClickListener {
     private Button appSaveBtn;
     private EditText appSizeEt,appRangeEt;
+    private ImageView settingAppBackBtn;
     @Override
     protected void initVariablesAndService() {
 
@@ -29,6 +31,8 @@ public class SettingAppActivity extends BaseActivity implements View.OnClickList
         appSaveBtn.setOnClickListener(this);
         appSizeEt = (EditText) findViewById(R.id.setting_app_sizeEt);
         appRangeEt = (EditText) findViewById(R.id.setting_app_rangeEt);
+        settingAppBackBtn = (ImageView) findViewById(R.id.setting_app_backBtn);
+        settingAppBackBtn.setOnClickListener(this);
     }
 
     @Override
@@ -36,6 +40,9 @@ public class SettingAppActivity extends BaseActivity implements View.OnClickList
         switch (view.getId()){
             case R.id.setting_app_saveBtn:
                 saveAppSettingChange();
+                break;
+            case R.id.setting_app_backBtn:
+                finish();
                 break;
         }
     }
@@ -49,10 +56,10 @@ public class SettingAppActivity extends BaseActivity implements View.OnClickList
             SharedPreferences appSettings = getSharedPreferences("appSettings", 0);
             SharedPreferences.Editor editor = appSettings.edit();
             if(!appSizeEt.getText().toString().equals("")){
-                editor.putInt("aroundSearchSize",Integer.getInteger(appSizeEt.getText().toString()));
+                editor.putInt("aroundSearchSize",Integer.parseInt(appSizeEt.getText().toString()));
             }
             if(!appRangeEt.getText().toString().equals("")){
-                editor.putInt("aroundSearchRange",Integer.getInteger(appRangeEt.getText().toString()));
+                editor.putInt("aroundSearchRange",Integer.parseInt(appRangeEt.getText().toString()));
             }
             editor.apply();
             finish();

@@ -31,12 +31,28 @@
                 android:textColor="#dd000000" />
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
-    <Button
-        android:id="@+id/around_search_parkingLotBtn"
-        android:layout_width="300dp"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="查看附近的停车场"
-        android:textColor="#ffffff"
-        android:background="@drawable/ripple_button"/>
+        android:orientation="vertical"
+        android:layout_marginTop="120dp">
+        <EditText
+            android:id="@+id/setting_user_info_nicknameEt"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:hint="修改昵称"
+            android:gravity="center"
+            android:maxLines="1"/>
+        <Button
+            android:id="@+id/setting_user_info_saveChangeBtn"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="保存修改"
+            android:textColor="#ffffff"
+            android:background="@drawable/ripple_button"/>
+    </LinearLayout>
+
+
 </LinearLayout>

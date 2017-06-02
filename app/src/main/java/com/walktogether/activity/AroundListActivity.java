@@ -38,6 +38,7 @@ public class AroundListActivity extends BaseActivity implements PoiSearch.OnPoiS
     private PoiSearch.Query query;
     private PoiSearch.SearchBound searchBound;
     private ImageView aroundListBackBtn;
+    private int poiSearchSum=0,searchPageNum=0;
     private final int SEARCHAROUNDDATA=0x00,LOADRECYCLERVIEW=0x01;
     private final String AROUNDPOI = "Android.intent.action.aroundpoi";
     private List<PoiInfo> poiInfoList = new ArrayList<PoiInfo>();
@@ -48,7 +49,17 @@ public class AroundListActivity extends BaseActivity implements PoiSearch.OnPoiS
             super.handleMessage(msg);
             switch (msg.what){
                 case SEARCHAROUNDDATA:
-                    searchAroundData(latLonPoint,searchKey);
+                    if(aroundSearchSize>=poiSearchSum+10){
+                        searchAroundData(latLonPoint,searchKey,10,searchPageNum);
+                        poiSearchSum+=10;
+                        searchPageNum++;
+                    }else if(aroundSearchSize==poiSearchSum){
+
+                    }else if(aroundSearchSize%10>0){
+                        searchAroundData(latLonPoint,searchKey,aroundSearchSize%10,searchPageNum);
+                        poiSearchSum+=aroundSearchSize%10;
+                        searchPageNum++;
+                    }
                     break;
                 case LOADRECYCLERVIEW:
                     loadAroundRecycleView();
@@ -90,7 +101,7 @@ public class AroundListActivity extends BaseActivity implements PoiSearch.OnPoiS
     /**
      * 以Intent内定位点以及关键字获取周边数据
      */
-    private void searchAroundData(LatLonPoint latLonPoint,String searchKey){
+    private void searchAroundData(LatLonPoint latLonPoint,String searchKey,int searchPageSize,int searchPageNum){
         query = new PoiSearch.Query("", searchKey, "");
         //三个参数分别为搜索字符串，搜索类型，搜索区域
         //keyWord表示搜索字符串，第二个参数表示POI搜索类型，默认为：生活服务、餐饮服务、商务住宅
@@ -99,11 +110,11 @@ public class AroundListActivity extends BaseActivity implements PoiSearch.OnPoiS
         //住宿服务|风景名胜|商务住宅|政府机构及社会团体|科教文化服务|交通设施服务|
         //金融保险服务|公司企业|道路附属设施|地名地址信息|公共设施
         //cityCode表示POI搜索区域，（这里可以传空字符串，空字符串代表全国在全国范围内进行搜索）
-        query.setPageSize(10);// 设置每页最多返回多少条poiitem
-        query.setPageNum(0);//设置查第一页
+        query.setPageSize(searchPageSize);// 设置每页最多返回多少条poiitem
+        query.setPageNum(searchPageNum);//设置查第一页
         PoiSearch poiSearch = new PoiSearch(this,query);
         if (latLonPoint!=null){
-            searchBound = new PoiSearch.SearchBound(latLonPoint,2000);
+            searchBound = new PoiSearch.SearchBound(latLonPoint,aroundSearchRange);
             poiSearch.setBound(searchBound);
         }//设置周边搜索的中心点以及区域
         poiSearch.setOnPoiSearchListener(this);//设置数据返回的监听器
@@ -138,7 +149,12 @@ public class AroundListActivity extends BaseActivity implements PoiSearch.OnPoiS
                             Log.e("poiItem", poiItem.getDistance()+"米" );
                             */
                         }
-                        handler.sendEmptyMessage(LOADRECYCLERVIEW);
+                        if(poiSearchSum==aroundSearchSize){
+                            handler.sendEmptyMessage(LOADRECYCLERVIEW);
+                        }else{
+                            handler.sendEmptyMessage(SEARCHAROUNDDATA);
+                        }
+
                         /*
                     } else if (suggestionCities != null
                             && suggestionCities.size() > 0) {

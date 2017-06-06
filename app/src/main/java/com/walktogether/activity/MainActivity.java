@@ -38,11 +38,16 @@ import com.walktogether.base.BaseActivity;
 import com.walktogether.engine.overlay.WalkRouteOverlay;
 import com.walktogether.engine.util.AMapUtil;
 import com.walktogether.engine.util.ToastUtil;
+import com.walktogether.entity.UserInfo;
 import com.walktogether.view.XCArcMenuView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.bmob.v3.BmobUser;
+import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
 
 /**
  * Created by Administrator on 2017/5/7.
@@ -50,6 +55,7 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity implements LocationSource, AMapLocationListener, PoiSearch.OnPoiSearchListener, RouteSearch.OnRouteSearchListener {
     private XCArcMenuView menuView;
+    private String userID;
     private MapView map = null;
     private AMap aMap = null;
     private OnLocationChangedListener mListener;
@@ -83,6 +89,8 @@ public class MainActivity extends BaseActivity implements LocationSource, AMapLo
             //没权限，进行权限请求
             requestPermission(REQUEST_ACCESS_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION);
         }
+        RongIM.init(this);
+        initUserToken();
     }
 
     @Override
@@ -382,6 +390,46 @@ public class MainActivity extends BaseActivity implements LocationSource, AMapLo
 
     @Override
     public void onRideRouteSearched(RideRouteResult rideRouteResult, int i) {
+
+    }
+    /**
+     * 获取融云所需userID及token
+     */
+    private void initUserToken(){
+        UserInfo loginUser = BmobUser.getCurrentUser(UserInfo.class);
+        userID = loginUser.getUserPhone();
+        connectRongServer(loginUser.getRongToken());
+    }
+
+    /**
+     * 初始化登录用户的融云服务
+     */
+    private void connectRongServer(String token) {
+
+        RongIM.connect(token, new RongIMClient.ConnectCallback() {
+            @Override
+            public void onSuccess(String userId) {
+                if (userId.equals(userID)){
+                    //Toast.makeText(getApplicationContext(), userID+"成功连接", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getApplicationContext(), userID+"融云连接失败", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                // Log.e("onError", "onError userid:" + errorCode.getValue());//获取错误的错误码
+                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                Log.e("MainActivity", "connect failure errorCode is : " + errorCode.getValue());
+            }
+
+
+            @Override
+            public void onTokenIncorrect() {
+                Toast.makeText(getApplicationContext(), "TokenError", Toast.LENGTH_SHORT).show();
+                Log.e("MainActivity", "token is error ,please check token and appkey");
+            }
+        });
 
     }
 }

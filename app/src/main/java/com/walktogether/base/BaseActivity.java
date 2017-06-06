@@ -70,7 +70,8 @@ public abstract class BaseActivity extends Activity {
         Intent intent = new Intent();
         intent.setClass(getApplicationContext(), classes);
         //设置要跳转到的页面以及跳转时的动画
-        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+        //startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+        startActivity(intent);
     }
     /**
      * 判断是否拥有指定权限

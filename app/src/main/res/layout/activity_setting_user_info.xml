@@ -13,7 +13,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="#ffffff"
+            android:background="@drawable/toolbar_background"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:theme="@style/Theme.AppCompat.Light">
             <ImageView
@@ -21,26 +21,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:src="@drawable/icon_back_black_24dp"/>
+                android:src="@drawable/icon_back_white_24dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="个人信息修改"
                 android:textSize="22sp"
-                android:textColor="#dd000000" />
+                android:textColor="#ffffff" />
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="vertical"
-        android:layout_marginTop="120dp">
+        android:gravity="center">
         <EditText
             android:id="@+id/setting_user_info_nicknameEt"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="20dp"
             android:hint="修改昵称"
             android:gravity="center"
             android:maxLines="1"/>
@@ -48,7 +49,7 @@
             android:id="@+id/setting_user_info_saveChangeBtn"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="20dp"
             android:text="保存修改"
             android:textColor="#ffffff"
             android:background="@drawable/ripple_button"/>

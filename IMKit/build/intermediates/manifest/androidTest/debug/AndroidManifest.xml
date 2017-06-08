@@ -87,7 +87,7 @@
             android:screenOrientation="portrait" /> <!-- imlib config begin -->
         <meta-data
             android:name="RONG_CLOUD_APP_KEY"
-            android:value="cpj2xarlc68cn" />
+            android:value="vnroth0kvfwdo" />
 
         <service
             android:name="io.rong.imlib.ipc.RongService"

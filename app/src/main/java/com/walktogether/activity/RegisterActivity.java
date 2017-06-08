@@ -128,7 +128,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                             if(e==null){
                                 Toast.makeText(RegisterActivity.this,"登录成功", Toast.LENGTH_SHORT).show();
                                 startActivity(MainActivity.class);
-                                RegisterActivity.this.finish();
+                                finish();
                             }
                         }
                     });

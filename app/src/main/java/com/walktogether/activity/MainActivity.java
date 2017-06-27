@@ -191,7 +191,7 @@ public class MainActivity extends BaseActivity implements LocationSource, AMapLo
             //设置为高精度定位模式
             //mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
             //为测试需要，暂时设置仅使用模拟位置进行定位且允许模拟定位
-            mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Device_Sensors);
+            mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
             mLocationOption.setMockEnable(true);
             //设置定位参数
             mlocationClient.setLocationOption(mLocationOption);
